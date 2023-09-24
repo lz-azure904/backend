@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+  <title>SolarAire OneChat Prototype</title>
+  <link
+    rel="shortcut icon"
+    href="{{ url_for('static', filename='dog.png') }}"
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+</head>
+
+<body>
+  
+  <img src="{{ url_for('static', filename='logo.png') }}" class="icon" />
+  <h2>Welcome {{ user.get("name") }}!</h2>
+  <h3>Ask me a question</h3>
+  <form action="/" method="post">
+    <input type="text" name="question" placeholder="Type your question" required />
+    <input type="submit" value="SolarAire OneChat" />
+  </form>
+  {% if result %}
+  <div class="result">{{ result }}</div>
+  {% endif %}
+  <br><br>
+  <h3><a href="/logout">Logout</a></h3>
+</body>

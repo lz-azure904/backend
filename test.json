@@ -1,0 +1,156 @@
+{
+    "svcId" : 6984357,
+    "priority" : "",
+    "description" : "",
+    "requestedStartDate" : 1670572628000,
+    "relatedOrder" : {
+      "relationType" : "reference",
+      "relatedOrderId" : 6984353
+    },
+    "SentTo" : 
+    {
+      "SentToType" : "Customer",
+      "SentToName" : "CW3",
+      "customerId" : "001",
+      "customerTenant": "AAD/Okta/G-Id"
+    },
+    "messageItems" : [ {
+      "message" : {
+        "messageId" : "9f144d4c-7a06-4469-a06e-31881fa21f78",
+        "ItemAction" : "create/update/delete",
+        "entityName" : "User",
+        "entityId": "001-01",
+        "content" : {
+          "description": "new user creation",
+          "contentType" : "TwinDefinition",
+          "payload": {
+             "firstName": "Smith",
+             "middleName": "N",
+             "lastName": "John",
+             "displayName": "Smith John",
+             "userId": "",
+             "primaryEmailDomain": "cw3.com",
+             "secondaryEmailDomain": "nextdigital.com",
+             "preferredLang": "",
+             "jobTitle": "engineer",
+             "department": "technology",
+             "companyName": "CW3",
+             "personalEmailAddress": "smithJohn11@gmail.com",
+             "address": "",
+             "mobileNumber": "1111111111",
+             "managerName": "lz",
+             "managerEmailAddress": "lz@cw3.com",
+             "userType": "standard",
+             "effectiveLeavingDate": ""
+          }
+        }
+     }
+    },
+    {
+        "message" : {
+          "messageId" : "9f144d4c-7a06-4469-a06e-31881fa21f79",
+          "ItemAction" : "create/update/delete",
+          "entityName" : "ProductivityNCollaboration-M365",
+          "entityId": "002-01",
+          "content" : {
+            "description": "ProductivityNCollaboration Suite",
+            "contentType" : "TwinDefinition",
+            "payload": {
+                "version": "",
+                "provider": "",
+                "users": [{
+                    "userId": "",
+                    "digitalFoundation": "Advanced",
+                    "virtualDeviceType": "Advanced",
+                    "physicalDeviceType": "",
+                    "mobileDeviceAccess": "Yes",
+                    "mobileDeviceType": "iphone",
+                    "userType": "standard",
+                    "roles": [{
+                        "roleName": "",
+                        "enabled": "Y/N" 
+                 } ]
+                }]
+             }
+          }
+       }
+      },
+      {
+        "message" : 
+        {
+          "messageId" : "9f144d4c-7a06-4469-a06e-31881fa21f99",
+          "ItemAction" : "create/update/delete",
+          "entityName" : "businessFoundation/businessAdvanced/businessPremium",
+          "entityId": "003-01/003-02/003-03",
+          "content" : {
+            "description": "business foundation suite",
+            "contentType" : "TwinDefinition",
+            "payload": {
+               "provider": "",
+               "version": "",
+               "users": 
+               [
+                    {
+                        "userId": "",
+                        "apps": 
+                        [
+                            {
+                                "appName": "",
+                                "provisioned": "Y/N",
+                                "roles": [
+                                    {
+                                        "roleName": "",
+                                        "enabled": "Y/N" 
+                                    } 
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+          }
+       }
+      }
+   ]
+}
+
+
+{
+    "statusCode": 409,
+    "headers": {
+        "x-ms-request-id": "8609607c-d002-0014-0c39-55a03d000000",
+        "x-ms-client-request-id": "2992b9c9-cb52-477b-87ee-a7219c47a13a",
+        "x-ms-version": "2021-04-10",
+        "X-Content-Type-Options": "nosniff",
+        "Timing-Allow-Origin": "*",
+        "x-ms-apihub-cached-response": "false",
+        "x-ms-apihub-obo": "false",
+        "Cache-Control": "no-cache",
+        "Date": "Sun, 12 Mar 2023 23:25:05 GMT",
+        "Content-Length": "252",
+        "Content-Type": "application/json"
+    },
+    "body": {
+        "odata.error": {
+            "code": "EntityAlreadyExists",
+            "message": {
+                "lang": "en-US",
+                "value": "The specified entity already exists.\nRequestId:8609607c-d002-0014-0c39-55a03d000000\nTime:2023-03-12T23:25:06.3474680Z"
+            }
+        }
+    }
+}
+
+"ErrorMsg": "@{body('Filter_array')}",
+                                                "FailedActionName": "@{items('For_each_3')}",
+                                                "FailedTrackingId": "@items('For_each')['clientTrackingId']",
+                                                "Msg": "@{body('Parse_JSON')}",
+                                                "MsgId": "@{body('Parse_JSON')?['externalId']}",
+                                                "PartitionKey": "@{items('For_each_3')?['id']}",
+                                                "RowKey": "@{body('Parse_JSON')?['id']}",
+                                                "Status": "0"
+
+
+
+
+                                                {"name":"For_each_2","inputs":{"foreachItems":[{"type":"Customer","name":"CW3","id":"001","endpoint":"http://localhost:4000"}]},"inputsMetadata":{"foreachItemsCount":1},"startTime":"2023-03-12T23:47:25.9922577Z","endTime":"2023-03-12T23:47:26.5321474Z","trackingId":"93f18190-beb0-41ed-9f4d-87c8b0f7377d","clientTrackingId":"08585229420400190301450931427CU13","code":"ActionFailed","status":"Failed","error":{"code":"ActionFailed","message":"An action failed. No dependent actions succeeded."}}
