@@ -1,4 +1,5 @@
 import os
+import json
 from multiprocessing.managers import BaseManager
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
@@ -11,27 +12,44 @@ CORS(app)
 # TODO: change password handling
 manager = BaseManager(('127.0.0.1', 5602), b'password')
 manager.register('query_index')
+manager.register('chat_index')
 manager.register('insert_into_index')
 manager.register('get_documents_list')
 manager.connect()
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    global manager
+    requestData = request.get_json()
+    print(requestData)
+    systemPrompt = requestData["systemPrompt"]
+    print(systemPrompt)
+
+    response = manager.chat_index(requestData)
+    
+    return make_response(jsonify(response)), 200
+
 
 @app.route("/query", methods=["GET"])
 def query_index():
     global manager
     query_text = request.args.get("text", None)
+    
+    #print("query_text: " + query_text)
     if query_text is None:
         return "No query found, please include a ?text=something parameter in the URL", 400
     
-    response = manager.query_index(query_text)._getvalue()
+
+    response = manager.query_index(json.loads(query_text)["content"])._getvalue()
     print(response)
     response_json = {
-        "text": str(response),
-        "sources": [{"text": str(x.source_text),
-                     "similarity": round(x.similarity, 2),
-                     "doc_id": str(x.doc_id),
-                     "start": x.node_info['start'],
-                     "end": x.node_info['end']
-                     } for x in response.source_nodes]                
+        "text": str(response)
+        # "sources": [{"text": str(x.source_text),
+        #              "similarity": round(x.similarity, 2),
+        #              "doc_id": str(x.doc_id),
+        #              "start": x.node_info['start'],
+        #              "end": x.node_info['end']
+        #              } for x in response.source_nodes]                
     }
     return make_response(jsonify(response_json)), 200
 
@@ -72,7 +90,7 @@ def get_document():
 
 
 @app.route("/")
-def hoome():
+def home():
     return "Welcome to th iBAE2 App"
 
 if __name__ == "__main__":
