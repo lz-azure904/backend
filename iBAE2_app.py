@@ -1,5 +1,6 @@
 import os
 import json
+import time
 from multiprocessing.managers import BaseManager
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
@@ -35,12 +36,15 @@ def query_index():
     global manager
     query_text = request.args.get("text", None)
     
-    #print("query_text: " + query_text)
+    data = json.loads(query_text)["content"]
     if query_text is None:
         return "No query found, please include a ?text=something parameter in the URL", 400
     
-
-    response = manager.query_index(json.loads(query_text)["content"])._getvalue()
+    if data.startswith("MSFT Sustainability Manager"):
+        time.sleep(0.3)
+        return "{\"text\": \"API call is queued and once it is finished the detail status will be sent back\"}", 202
+    
+    response = manager.query_index(data)._getvalue()
     print(response)
     response_json = {
         "text": str(response)
