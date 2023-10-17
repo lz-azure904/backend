@@ -57,6 +57,20 @@ def query_index():
     }
     return make_response(jsonify(response_json)), 200
 
+@app.route("/bizTaskService", methods=["POST"])
+def biz_service():
+    requestData = request.get_json()
+    systemPrompt = requestData["prompt"]
+    agents = requestData["agent"]
+    dataset = requestData["dataset"]
+    model = requestData["model"]
+    temperature = requestData["temperature"]
+    messages = requestData["messages"]
+    key = requestData["key"]
+    print(model["id"] + "-" + key + "-" + systemPrompt + "-" + agents +"-" + dataset )
+    return "{\"status\": \"Services are started...\"}", 200
+
+
 @app.route("/uploadfile", methods=["POST"])
 def upload_file():
     global manager
