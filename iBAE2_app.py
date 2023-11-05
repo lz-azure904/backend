@@ -88,14 +88,14 @@ def query_index_backup():
 @app.route("/bizTaskService", methods=["POST"])
 def biz_service():
     requestData = request.get_json()
-    systemPrompt = requestData["prompt"]
-    agents = requestData["agent"]
-    dataset = requestData["dataset"]
-    model = requestData["model"]
-    temperature = requestData["temperature"]
-    messages = requestData["messages"]
-    key = requestData["key"]
-    print(model["id"] + "-" + key + "-" + systemPrompt + "-" + agents +"-" + dataset )
+    systemPrompt = requestData["prompt"] if requestData["prompt"] != None else ""
+    agents = requestData["agent"] if requestData["agent"] != None else ""
+    dataset = requestData["dataset"] if requestData["dataset"] != None else ""
+    model = requestData["model"] if requestData["model"] != None else ""
+    temperature = requestData["temperature"] if requestData["temperature"] != None else ""
+    messages = requestData["messages"] if requestData["messages"] != None else ""
+    key = requestData["key"] if requestData["key"] != None else ""
+    # print(model+ "-" + key + "-" + systemPrompt + "-" + agents +"-" + dataset )
     time.sleep(3)
     # returnMsg = orchestrator.run(model, temperature, messages, systemPrompt, agents, dataset, key)
     # return "{\"status\": \"${returnMsg}\"}", 200
