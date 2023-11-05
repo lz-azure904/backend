@@ -19,6 +19,10 @@ lock = Lock()
 
 index_name = ".\saved_index"
 pkl_name = "stored_documents.pkl"
+# PROMPT_PREFIX = "Imagine three different experts are answering this question. All experts will write down 1 step of their thinking, then share it with the group.Then all experts will go on to the next step, etc. If any expert realises they're wrong at any point then they leave. Last, do not show thought steps back to the users. The question is... \\n";
+PROMPT_PREFIX = "Imagine three different experts are answering this question. All experts will write down 1 step of their thinking, then share it with the group.Then all experts will go on to the next step, etc. If any expert realises they're wrong at any point then they leave. Last, do not show thought steps back to the users. The question is... \\n";
+
+PROMPT_POSTFIX = "\\n... For numbers try the best to put them into a table format with years as row and numbers as column. For a list of things first summarize the findings then use the markdown to list the data"
 
 
 def initialize_index():
@@ -64,26 +68,35 @@ def chat_index(chat_text):
     return "ok"
 
 
-
+def query_index_backup(query_text):
+    global index
+    #print("query text:" + query_text)
+    response = index.as_query_engine(response_mode='tree_summarize', verbose=True,).query(query_text + PROMPT_POSTFIX)
+    #print(response)
+    return response
 
 def query_index(query_text):
     global index
     #print("query text:" + query_text)
-    response = index.as_query_engine(response_mode='tree_summarize', verbose=True,).query(query_text)
+    query_engine = index.as_query_engine(response_mode='tree_summarize', verbose=True,)
     #print(response)
-    return response
+    response_stream = query_engine.query(query_text + PROMPT_POSTFIX)
+    # return response_stream.print_response_stream()
+    return response_stream
 
 def insert_into_index(doc_file_path, doc_id=None):
     global index, stored_docs
     #print("get a file path =" + doc_file_path)
     #print("doc id =" + doc_id)
-    document = SimpleDirectoryReader(input_files=[doc_file_path]).load_data()[0]
+    # document = SimpleDirectoryReader(input_files=[doc_file_path]).load_data()[0]
+    document = SimpleDirectoryReader(input_files=[doc_file_path]).load_data()
+    print(f"Loaded {len(document)} docs")
     if doc_id is not None:
         document.doc_id = doc_id
     
     with lock:
-        stored_docs[document.doc_id] = document.text[0:200]
-
+        stored_docs[document.doc_id] = document.text[0:5000]
+        print("data: " + document.text[0:5000])
         index.insert(document)
         index.storage_context.persist(persist_dir=index_name)
 
