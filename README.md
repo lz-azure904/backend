@@ -1,10 +1,9 @@
 # Simple backend Flask server + Index server for RAG
 
-1. Install the requirements
-
-   ```bash
-   $ pip install -r requirements.txt
-   ```
+1. download the repo to a local folder
+```
+git clone https://github.com/LZ-Azure904/backend.git
+```
 2. start the index server on windows with port=5602
 
 ```
