@@ -23,11 +23,11 @@ pkl_name = "stored_documents.pkl"
 PROMPT_PREFIX = "Imagine three different experts are answering this question. All experts will write down 1 step of their thinking, then share it with the group.Then all experts will go on to the next step, etc. If any expert realises they're wrong at any point then they leave. Last, do not show thought steps back to the users. The question is... \\n";
 
 PROMPT_POSTFIX = "\\n... For numbers try the best to put them into a table format with years as row and numbers as column. For a list of things first summarize the findings then use the markdown to list the data"
-
+GPT_MODEL="gpt-4-1106-preview"
 
 def initialize_index():
     global index, stored_docs
-    llm = OpenAI(temperature=0.1, model="gpt-4")
+    llm = OpenAI(temperature=0.1, model=GPT_MODEL)
     service_context = ServiceContext.from_defaults(chunk_size_limit=512, llm=llm)
     with lock:
         if os.path.exists(index_name):
