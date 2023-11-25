@@ -3,6 +3,8 @@ import json
 import time
 
 import pickle
+from dotenv import load_dotenv
+load_dotenv()
 
 #NOTE: set up the OPENAI_API_KEY in the OS environment
 OPENAI_API_KEY = os.environ['OPENAI_API_KEY'] 

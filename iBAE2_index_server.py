@@ -1,6 +1,8 @@
 import os
 import pickle
 import json
+from dotenv import load_dotenv
+load_dotenv()
 
 #NOTE: set up the OPENAI_API_KEY in the OS environment
 OPENAI_API_KEY = os.environ['OPENAI_API_KEY'] 
@@ -23,7 +25,7 @@ pkl_name = "stored_documents.pkl"
 PROMPT_PREFIX = "Imagine three different experts are answering this question. All experts will write down 1 step of their thinking, then share it with the group.Then all experts will go on to the next step, etc. If any expert realises they're wrong at any point then they leave. Last, do not show thought steps back to the users. The question is... \\n";
 
 PROMPT_POSTFIX = "\\n... For numbers try the best to put them into a table format with years as row and numbers as column. For a list of things first summarize the findings then use the markdown to list the data"
-GPT_MODEL="gpt-4-1106-preview"
+GPT_MODEL="gpt-4"
 
 def initialize_index():
     global index, stored_docs
