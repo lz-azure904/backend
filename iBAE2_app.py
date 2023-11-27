@@ -1,9 +1,11 @@
 import os
 import json
+import time
 from multiprocessing.managers import BaseManager
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, stream_with_context
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
+# from orchestrator import orchestrator
 
 app = Flask(__name__)
 CORS(app)
@@ -34,13 +36,17 @@ def chat():
 def query_index():
     global manager
     query_text = request.args.get("text", None)
-    
-    #print("query_text: " + query_text)
+    print(query_text)
+    data = json.loads(query_text)["content"]
+    print(data)
     if query_text is None:
         return "No query found, please include a ?text=something parameter in the URL", 400
     
-
-    response = manager.query_index(json.loads(query_text)["content"])._getvalue()
+    if data.startswith("MSFT Sustainability Manager"):
+        time.sleep(0.3)
+        return "{\"text\": \"API call is queued and once it is finished the detail status will be sent back\"}", 202
+    
+    response = manager.query_index(data)._getvalue()
     print(response)
     response_json = {
         "text": str(response)
@@ -52,6 +58,49 @@ def query_index():
         #              } for x in response.source_nodes]                
     }
     return make_response(jsonify(response_json)), 200
+
+@app.route("/query_backup", methods=["GET"])
+def query_index_backup():
+    global manager
+    query_text = request.args.get("text", None)
+    
+    data = json.loads(query_text)["content"]
+    if query_text is None:
+        return "No query found, please include a ?text=something parameter in the URL", 400
+    
+    if data.startswith("MSFT Sustainability Manager"):
+        time.sleep(0.3)
+        return "{\"text\": \"API call is queued and once it is finished the detail status will be sent back\"}", 202
+    
+    response = manager.query_index(data)._getvalue()
+    print(response)
+    response_json = {
+        "text": str(response)
+        # "sources": [{"text": str(x.source_text),
+        #              "similarity": round(x.similarity, 2),
+        #              "doc_id": str(x.doc_id),
+        #              "start": x.node_info['start'],
+        #              "end": x.node_info['end']
+        #              } for x in response.source_nodes]                
+    }
+    return make_response(jsonify(response_json)), 200
+
+@app.route("/bizTaskService", methods=["POST"])
+def biz_service():
+    requestData = request.get_json()
+    systemPrompt = requestData["prompt"] if requestData["prompt"] != None else ""
+    agents = requestData["agent"] if requestData["agent"] != None else ""
+    dataset = requestData["dataset"] if requestData["dataset"] != None else ""
+    model = requestData["model"] if requestData["model"] != None else ""
+    temperature = requestData["temperature"] if requestData["temperature"] != None else ""
+    messages = requestData["messages"] if requestData["messages"] != None else ""
+    key = requestData["key"] if requestData["key"] != None else ""
+    # print(model+ "-" + key + "-" + systemPrompt + "-" + agents +"-" + dataset )
+    time.sleep(3)
+    # returnMsg = orchestrator.run(model, temperature, messages, systemPrompt, agents, dataset, key)
+    # return "{\"status\": \"${returnMsg}\"}", 200
+    return "{\"status\": \"system is ready for use - your personalized agent is at your service\"}", 200
+
 
 @app.route("/uploadfile", methods=["POST"])
 def upload_file():
